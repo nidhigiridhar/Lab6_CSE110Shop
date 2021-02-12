@@ -20,6 +20,7 @@ window.addEventListener('DOMContentLoaded', () => {
     li.shadowRoot.querySelector('.title').innerHTML = product.title;
     li.shadowRoot.querySelector('.price').innerHTML = product.price;
     li.shadowRoot.querySelector('button').innerHTML = 'Add to Cart';
+    li.shadowRoot.querySelector('button').setAttribute('onclick', 'alert(\'Added to Cart!\')');
 
     li.setAttribute('id', product.id);
 
