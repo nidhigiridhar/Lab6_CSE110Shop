@@ -1,10 +1,9 @@
 // product-item.js
-
 class ProductItem extends HTMLElement {
   constructor() {
     super();
 
-    let body = this.attachShadow({mode: 'open'});
+    let body = this.attachShadow({ mode: 'open' });
     let li = document.createElement('li');
     li.setAttribute('class', 'product');
 
@@ -17,22 +16,44 @@ class ProductItem extends HTMLElement {
     price.setAttribute('class', 'price');
 
     let button = document.createElement('button');
-    
+
     // event handler to add and remove from cart (step 5)
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function () {
       if (button.innerHTML == 'Add to Cart') {
         let cart = parseInt(document.getElementById('cart-count').innerHTML);
         cart++;
         document.getElementById('cart-count').innerHTML = cart;
         button.innerHTML = 'Remove from Cart';
+
+        // get cartTracker array from local storage and remove current one in local storage
+        let cartTracker = JSON.parse(localStorage.getItem('cartTracker'));
+        window.localStorage.removeItem('cartTracker');
+
+        // add element to cartTacker array if it is added to cart
+        let elementID = parseInt(li.getAttribute('id'));
+        cartTracker[elementID - 1] = 1;
+
+        // put updated cartTracker array back in local storage
+        window.localStorage.setItem('cartTracker', JSON.stringify(cartTracker));
       }
+
       else {
         let cart = parseInt(document.getElementById('cart-count').innerHTML);
         cart--;
         document.getElementById('cart-count').innerHTML = cart;
         button.innerHTML = 'Add to Cart';
+
+        // get cartTracker array from local storage and remove current one in local storage
+        let cartTracker = JSON.parse(localStorage.getItem('cartTracker'));
+        window.localStorage.removeItem('cartTracker');
+
+        // add element to cartTacker array if it is added to cart
+        let elementID = parseInt(li.getAttribute('id'));
+        cartTracker[elementID - 1] = 0;
+
+        // put updated cartTracker array back in local storage
+        window.localStorage.setItem('cartTracker', JSON.stringify(cartTracker));
       }
-      
     })
 
     let style = document.createElement('style');
@@ -101,14 +122,13 @@ class ProductItem extends HTMLElement {
       text-overflow: unset;
     } `;
 
-   li.appendChild(image);
-   li.appendChild(title);
-   li.appendChild(price);
-   li.appendChild(button);
-   body.appendChild(li);
-   body.appendChild(style);
-    
-    
+    li.appendChild(image);
+    li.appendChild(title);
+    li.appendChild(price);
+    li.appendChild(button);
+    body.appendChild(li);
+    body.appendChild(style);
+
   }
 }
 
