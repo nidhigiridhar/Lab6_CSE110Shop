@@ -1,33 +1,30 @@
 // Script.js
-
+let productArray = [];
 window.addEventListener('DOMContentLoaded', () => {
-  // TODO
-
-  // create a fetch request to get json data from the url
   fetch('https://fakestoreapi.com/products')
     .then(response => response.json())
-    .then(data => window.localStorage.setItem('products', JSON.stringify(data))); // add fetched data to local storage
-    
+    .then(data => {
+      localStorage.setItem('products', JSON.stringify( data))
+      //console.log(data)
+    })
 
-  let productArray = JSON.parse(window.localStorage.getItem('products'));
+  productArray = JSON.parse(localStorage.getItem('products'));
+
+  // add every product to html one by one
   for (let i = 0; i < productArray.length; i++) {
-    // create a product item and append it to the #product-list ul element
-    let currentProduct = productArray[i]; // get current product from the json array
+    let product = productArray[i];
 
+    let li = document.createElement('product-item');
+    li.shadowRoot.querySelector('img').src = product.image;
+    li.shadowRoot.querySelector('img').alt = product.title;
+    li.shadowRoot.querySelector('.title').innerHTML = product.title;
+    li.shadowRoot.querySelector('.price').innerHTML = product.price;
+    li.shadowRoot.querySelector('button').innerHTML = 'Add to Cart';
 
-    let item = document.createElement('product-item');
-    document.getElementById('product-list').appendChild(item);
+    li.setAttribute('id', product.id);
 
-    // TODO: so this does not work because when line 19 is called, it automatically goes to the ProductItem class and runs the code there 
-    // when that happens, the value of title is null so nothing happens and idk how to fix this!!
-    let productTitle = currentProduct.title
-    item.setAttribute('title', productTitle);
-    console.log(item.getAttribute('title'));
-    
-
-  
-
-    //document.getElementById('product-list').getElementsByClassName('title').innerHTML = currentProduct.title;
-    //console.log(document.getElementById('product-list').getElementsByClassName('title'));
+    //add the product-item to the <ul>
+    document.getElementById('product-list').appendChild(li);
   }
-})
+      
+});
