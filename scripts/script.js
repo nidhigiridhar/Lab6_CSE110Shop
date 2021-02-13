@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', () => {
     li.shadowRoot.querySelector('img').src = product.image;
     li.shadowRoot.querySelector('img').alt = product.title;
     li.shadowRoot.querySelector('.title').innerHTML = product.title;
-    li.shadowRoot.querySelector('.price').innerHTML = product.price;
+    li.shadowRoot.querySelector('.price').innerHTML = '$' + product.price;
     li.shadowRoot.querySelector('button').innerHTML = 'Add to Cart';   
     li.shadowRoot.querySelector('.product').setAttribute('id', product.id);
 
