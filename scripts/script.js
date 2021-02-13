@@ -1,33 +1,58 @@
 // Script.js
+let productArray = [];
 
+// page loads
 window.addEventListener('DOMContentLoaded', () => {
-  // TODO
-
-  // create a fetch request to get json data from the url
   fetch('https://fakestoreapi.com/products')
     .then(response => response.json())
-    .then(data => window.localStorage.setItem('products', JSON.stringify(data))); // add fetched data to local storage
-    
+    .then(data => {
+      window.localStorage.setItem('products', JSON.stringify(data))
+    })
 
-  let productArray = JSON.parse(window.localStorage.getItem('products'));
-  for (let i = 0; i < productArray.length; i++) {
-    // create a product item and append it to the #product-list ul element
-    let currentProduct = productArray[i]; // get current product from the json array
+  productArray = JSON.parse(window.localStorage.getItem('products'));
 
 
-    let item = document.createElement('product-item');
-    document.getElementById('product-list').appendChild(item);
+  // get localCartTracker from localStorage
+  let localCartTracker = JSON.parse(window.localStorage.getItem('cartTracker'));
 
-    // TODO: so this does not work because when line 19 is called, it automatically goes to the ProductItem class and runs the code there 
-    // when that happens, the value of title is null so nothing happens and idk how to fix this!!
-    let productTitle = currentProduct.title
-    item.setAttribute('title', productTitle);
-    console.log(item.getAttribute('title'));
-    
+  // if localCartTracker was not in localStorage (initial case), populate it with 0's
+  if(localCartTracker == undefined){
+    localCartTracker=[];
+    //console.log('here inside if');
+    let length = productArray.length; 
+    for(let i = 0; i < length; i++) {
+      localCartTracker.push(0);
+    }
+  }
 
+  // add localCartTracker to localStorage
+  window.localStorage.setItem('cartTracker', JSON.stringify(localCartTracker)); 
   
 
-    //document.getElementById('product-list').getElementsByClassName('title').innerHTML = currentProduct.title;
-    //console.log(document.getElementById('product-list').getElementsByClassName('title'));
-  }
-})
+  // add every product to html one by one
+  for (let i = 0; i < productArray.length; i++) {
+    let product = productArray[i];
+
+    let li = document.createElement('product-item');
+
+    li.shadowRoot.querySelector('img').src = product.image;
+    li.shadowRoot.querySelector('img').alt = product.title;
+    li.shadowRoot.querySelector('.title').innerHTML = product.title;
+    li.shadowRoot.querySelector('.price').innerHTML = '$' + product.price;
+    li.shadowRoot.querySelector('button').innerHTML = 'Add to Cart';   
+    li.shadowRoot.querySelector('.product').setAttribute('id', product.id);
+
+    // update cart count and products added to cart to in previous browser session
+    let elementID = li.shadowRoot.querySelector('.product').getAttribute('id');
+    if(localCartTracker[elementID - 1] == 1) {
+      let cart = parseInt(document.getElementById('cart-count').innerHTML);
+      cart++;
+      document.getElementById('cart-count').innerHTML = cart;
+      li.shadowRoot.querySelector('button').innerHTML = 'Remove from Cart';
+    }
+
+    //add the product-item to the <ul>
+    document.getElementById('product-list').appendChild(li);
+
+  }   
+});
