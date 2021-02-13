@@ -20,6 +20,9 @@ class ProductItem extends HTMLElement {
     // event handler to add and remove from cart (step 5)
     button.addEventListener('click', function () {
       if (button.innerHTML == 'Add to Cart') {
+        alert('Added to Cart!');
+
+        // increase cart count 
         let cart = parseInt(document.getElementById('cart-count').innerHTML);
         cart++;
         document.getElementById('cart-count').innerHTML = cart;
@@ -38,6 +41,9 @@ class ProductItem extends HTMLElement {
       }
 
       else {
+        alert('Removed from Cart!');
+
+        // decrease cart count 
         let cart = parseInt(document.getElementById('cart-count').innerHTML);
         cart--;
         document.getElementById('cart-count').innerHTML = cart;
