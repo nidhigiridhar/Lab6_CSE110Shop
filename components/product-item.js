@@ -29,7 +29,7 @@ class ProductItem extends HTMLElement {
         button.innerHTML = 'Remove from Cart';
 
         // get cartTracker array from local storage and remove current one in local storage
-        let cartTracker = JSON.parse(localStorage.getItem('cartTracker'));
+        let cartTracker = JSON.parse(window.localStorage.getItem('cartTracker'));
         window.localStorage.removeItem('cartTracker');
 
         // add element to cartTacker array if it is added to cart
@@ -50,7 +50,7 @@ class ProductItem extends HTMLElement {
         button.innerHTML = 'Add to Cart';
 
         // get cartTracker array from local storage and remove current one in local storage
-        let cartTracker = JSON.parse(localStorage.getItem('cartTracker'));
+        let cartTracker = JSON.parse(window.localStorage.getItem('cartTracker'));
         window.localStorage.removeItem('cartTracker');
 
         // add element to cartTacker array if it is added to cart

@@ -6,14 +6,14 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch('https://fakestoreapi.com/products')
     .then(response => response.json())
     .then(data => {
-      localStorage.setItem('products', JSON.stringify(data))
+      window.localStorage.setItem('products', JSON.stringify(data))
     })
 
-  productArray = JSON.parse(localStorage.getItem('products'));
+  productArray = JSON.parse(window.localStorage.getItem('products'));
 
 
   // get localCartTracker from localStorage
-  let localCartTracker = JSON.parse(localStorage.getItem('cartTracker'));
+  let localCartTracker = JSON.parse(window.localStorage.getItem('cartTracker'));
 
   // if localCartTracker was not in localStorage (initial case), populate it with 0's
   if(localCartTracker == undefined){
@@ -26,7 +26,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // add localCartTracker to localStorage
-  localStorage.setItem('cartTracker', JSON.stringify(localCartTracker)); 
+  window.localStorage.setItem('cartTracker', JSON.stringify(localCartTracker)); 
   
 
   // add every product to html one by one
